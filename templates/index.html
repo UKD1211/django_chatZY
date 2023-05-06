@@ -1,0 +1,130 @@
+<!Doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chatzy - Chatbot created using OpenAI API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Chatzy</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/about">About</a>
+                    </li>
+
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="text-center my-3">Bored? Welcome to Chatzy - Lets Chat!</h1>
+
+
+        <div class="chat">
+            <pre id="prompt">
+Uttam:Hey how are you?
+Chatzy: I am fine.
+            </pre>
+
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="typedPrompt"></textarea>
+                <label for="floatingTextarea">Type your response here</label>
+
+            </div>
+            {% csrf_token %}
+            <button type="button" id="submit" class="btn btn-dark my-3">submit</button>
+        </div>
+    </div>
+
+
+    <script>
+
+        let csrfmiddlewaretoken = document.querySelector("input[type=hidden]").value
+        console.log(csrfmiddlewaretoken)
+        // Example POST method implementation:
+        // async function postData(url = "", data = {}) {
+        //     // Default options are marked with *
+        //     const response = await fetch(url, {
+        //         method: "POST", // *GET, POST, PUT, DELETE, etc.
+        //         mode: "cors", // no-cors, *cors, same-origin
+        //         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        //         credentials: "same-origin", // include, *same-origin, omit
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             // 'Content-Type': 'application/x-www-form-urlencoded',
+        //         },
+        //         redirect: "follow", // manual, *follow, error
+        //         referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        //         body: JSON.stringify(data), // body data type must match "Content-Type" header
+        //     });
+        //     return response.json(); // parses JSON response into native JavaScript objects
+        // }
+
+        // postData("http://127.0.0.1:8000/api", { prompt: 42, csrfmiddlewaretoken }).then((data) => {
+        //     console.log(data); // JSON data parsed by `data.json()` call
+        // });
+
+
+        // async function exampleFetch() {
+        //     const response = await fetch('https://reqres.in/api/users/2');
+        //     const json = await response.json();
+        //     console.log(json);
+        // }
+
+        // exampleFetch()
+
+        const fetchData = async (myPrompt) => {
+            let data = new FormData();
+            data.append('prompt', myPrompt);;
+            data.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+
+            let a = await fetch("/api", {
+                method: 'POST',
+                body: data,
+                credentials: 'same-origin',
+            })
+            let r = await a.json()
+            return r
+        }
+
+        submit.addEventListener("click", async () => {
+            let myPrompt = document.getElementById("prompt").innerText + "\nUttam: " + typedPrompt.value + "\nChatzy:"
+            document.getElementById("prompt").innerText = myPrompt
+            response = await fetchData(myPrompt)
+            document.getElementById("prompt").innerText += response["choices"][0].text
+            document.getElementById("typedPrompt").value = ""
+
+
+        })
+
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
