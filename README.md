@@ -151,23 +151,7 @@ This view is reusable. The most important changeble option:
 - payload: `{message: "YOUR MESSAGE"}`
 - response: `{tag: 'TAG', message: 'RESPONSE'}`
 
-## About
-It's a very basic Chatbot decisions are made with tools by NLTK which follows
-basic preprocessing for NLP of tokenization and stumming.
 
-This package is inspired by the Chatbot Tutorial of Tech witch Tim.
-Checkout his blog: https://www.techwithtim.net/tutorials/ai-chatbot/
-
-In my opinion the used script is teaching important concepts but it's 
-overtooled by using Deep-Learning algorithm on that small amount of data.
-
-Real NLP's and Deep Learning algorithms needs a large amount of data. One
-problem in smaller and beginning projects: You won't have that amount of data
-by starting your projects. 
-
-**This package gives you possibilities to work with a small amount of data and
-it helps you to collect new data for being able to use deep learning
-algorithms one day.**
 
 ### Contributing
 Fork the repo and get stuck in!
